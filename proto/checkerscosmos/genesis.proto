@@ -1,0 +1,14 @@
+syntax = "proto3";
+package masterfung.checkerscosmos.checkerscosmos;
+
+import "gogoproto/gogo.proto";
+import "checkerscosmos/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/masterfung/checkersCosmos/x/checkerscosmos/types";
+
+// GenesisState defines the checkerscosmos module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}
