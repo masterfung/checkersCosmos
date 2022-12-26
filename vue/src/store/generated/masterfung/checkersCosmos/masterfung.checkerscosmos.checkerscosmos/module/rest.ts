@@ -9,6 +9,10 @@
  * ---------------------------------------------------------------
  */
 
+export interface CheckerscosmosMsgCreateGameResponse {
+  gameIndex?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */

@@ -52050,6 +52050,11 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  masterfung.checkerscosmos.checkerscosmos.MsgCreateGameResponse:
+    type: object
+    properties:
+      gameIndex:
+        type: string
   masterfung.checkerscosmos.checkerscosmos.Params:
     type: object
     description: Params defines the parameters for the module.
