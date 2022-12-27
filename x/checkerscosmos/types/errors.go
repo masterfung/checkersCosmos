@@ -15,4 +15,6 @@ var (
 	ErrCreatorNotPlayer = sdkerrors.Register(ModuleName, 1104, "Message creator is not a player")
 	ErrNotPlayerTurn    = sdkerrors.Register(ModuleName, 1105, "Player tried to play out of turn")
 	ErrWrongMove        = sdkerrors.Register(ModuleName, 1106, "Wrong move")
+	ErrBlackAlreadyPlayed = sdkerrors.Register(ModuleName, 1107, "Black player has already moved")
+	ErrRedAlreadyPlayed = sdkerrors.Register(ModuleName, 1108, "Red player has already moved")
 )
