@@ -52066,6 +52066,8 @@ definitions:
         format: int32
       winner:
         type: string
+  masterfung.checkerscosmos.checkerscosmos.MsgRejectGameResponse:
+    type: object
   masterfung.checkerscosmos.checkerscosmos.Params:
     type: object
     description: Params defines the parameters for the module.

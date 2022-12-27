@@ -19,8 +19,8 @@ func setupMsgServerWithOneGameForPlayMove(t testing.TB) (types.MsgServer, keeper
 	context := sdk.WrapSDKContext(ctx)
 	server.CreateGame(context, &types.MsgCreateGame{
 		Creator: alice,
-		Black: bob,
-		Red: carol,
+		Black:   bob,
+		Red:     carol,
 	})
 	return server, *k, context
 }
@@ -44,22 +44,22 @@ func TestPlayMove(t *testing.T) {
 }
 
 func TestPlayMoveCannotParseGame(t *testing.T) {
-    msgServer, k, context := setupMsgServerWithOneGameForPlayMove(t)
-    ctx := sdk.UnwrapSDKContext(context)
-    storedGame, _ := k.GetStoredGame(ctx, "1")
-    storedGame.Board = "not a board"
-    k.SetStoredGame(ctx, storedGame)
-    defer func() {
-        r := recover()
-        require.NotNil(t, r, "The code did not panic")
-        require.Equal(t, r, "Game cannot be parsed: invalid board string: not a board")
-    }()
-    msgServer.PlayMove(context, &types.MsgPlayMove{
-        Creator:   bob,
-        GameIndex: "1",
-        FromX:     1,
-        FromY:     2,
-        ToX:       2,
-        ToY:       3,
-    })
+	msgServer, k, context := setupMsgServerWithOneGameForPlayMove(t)
+	ctx := sdk.UnwrapSDKContext(context)
+	storedGame, _ := k.GetStoredGame(ctx, "1")
+	storedGame.Board = "not a board"
+	k.SetStoredGame(ctx, storedGame)
+	defer func() {
+		r := recover()
+		require.NotNil(t, r, "The code did not panic")
+		require.Equal(t, r, "Game cannot be parsed: invalid board string: not a board")
+	}()
+	msgServer.PlayMove(context, &types.MsgPlayMove{
+		Creator:   bob,
+		GameIndex: "1",
+		FromX:     1,
+		FromY:     2,
+		ToX:       2,
+		ToY:       3,
+	})
 }

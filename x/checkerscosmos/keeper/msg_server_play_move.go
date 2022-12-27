@@ -16,28 +16,28 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	// TODO: Handling the message
 	_ = ctx
 	storedGame, found := k.Keeper.GetStoredGame(ctx, msg.GameIndex)
-	if (!found) {
+	if !found {
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
 	}
 	isBlack := storedGame.Black == msg.Creator
 	isRed := storedGame.Red == msg.Creator
 	var player rules.Player
-	if (!isBlack && !isRed) {
+	if !isBlack && !isRed {
 		return nil, sdkerrors.Wrapf(types.ErrCreatorNotPlayer, "%s", msg.Creator)
-	} else if (isBlack && isRed) {
+	} else if isBlack && isRed {
 		player = rules.StringPieces[storedGame.Turn].Player
-	} else if (isBlack) {
+	} else if isBlack {
 		player = rules.BLACK_PLAYER
 	} else {
 		player = rules.RED_PLAYER
 	}
 
 	game, err := storedGame.ParseGame()
-	if (err != nil) {
+	if err != nil {
 		panic(err.Error())
 	}
 
-	if (!game.TurnIs(player)) {
+	if !game.TurnIs(player) {
 		return nil, sdkerrors.Wrapf(types.ErrNotPlayerTurn, "%s", player)
 	}
 
@@ -51,7 +51,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 			Y: int(msg.ToY),
 		},
 	)
-	if (moveErr != nil) {
+	if moveErr != nil {
 		return nil, sdkerrors.Wrapf(types.ErrWrongMove, moveErr.Error())
 	}
 
@@ -72,6 +72,6 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	return &types.MsgPlayMoveResponse{
 		CapturedX: int32(captured.X),
 		CapturedY: int32(captured.Y),
-		Winner: rules.PieceStrings[game.Winner()],
+		Winner:    rules.PieceStrings[game.Winner()],
 	}, nil
 }
