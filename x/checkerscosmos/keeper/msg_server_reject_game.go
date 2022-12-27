@@ -12,16 +12,16 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	storedGame, found := k.Keeper.GetStoredGame(ctx, msg.GameIndex)
-	if !found {
+	if (!found) {
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
 	}
-
-	if storedGame.Black == msg.Creator {
-		if 0 < storedGame.MoveCount {
+	
+	if (storedGame.Black == msg.Creator) {
+		if (0 < storedGame.MoveCount) {
 			return nil, types.ErrBlackAlreadyPlayed
 		}
-	} else if storedGame.Red == msg.Creator {
-		if 1 < storedGame.MoveCount {
+	} else if (storedGame.Red == msg.Creator) {
+		if (1 < storedGame.MoveCount) {
 			return nil, types.ErrRedAlreadyPlayed
 		}
 	} else {
@@ -32,9 +32,9 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.GameRejectedEventType,
-			sdk.NewAttribute(types.GameRejectedEventCreator, msg.Creator),
-			sdk.NewAttribute(types.GameRejectedEventGameIndex, msg.GameIndex),
-		),
+		sdk.NewAttribute(types.GameRejectedEventCreator, msg.Creator),
+		sdk.NewAttribute(types.GameRejectedEventGameIndex, msg.GameIndex),
+	),
 	)
 
 	return &types.MsgRejectGameResponse{}, nil
