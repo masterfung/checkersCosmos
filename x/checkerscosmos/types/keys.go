@@ -40,4 +40,5 @@ func KeyPrefix(p string) []byte {
 
 const (
 	SystemInfoKey = "SystemInfo-value-"
+	NoFifoIndex = "-1"
 )
