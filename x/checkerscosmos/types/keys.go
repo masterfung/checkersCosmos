@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "checkerscosmos"
@@ -41,4 +43,6 @@ func KeyPrefix(p string) []byte {
 const (
 	SystemInfoKey = "SystemInfo-value-"
 	NoFifoIndex = "-1"
+	MaxTurnDuration = time.Duration(24 * 3_600 * 1000_000_000)
+	DeadlineLayout  = "2006-01-02 15:04:05.999999999 +0000 UTC"
 )
