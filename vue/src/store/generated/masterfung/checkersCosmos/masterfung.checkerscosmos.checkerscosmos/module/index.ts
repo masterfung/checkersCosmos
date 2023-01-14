@@ -4,15 +4,15 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgRejectGame } from "./types/checkerscosmos/tx";
 import { MsgCreateGame } from "./types/checkerscosmos/tx";
 import { MsgPlayMove } from "./types/checkerscosmos/tx";
+import { MsgRejectGame } from "./types/checkerscosmos/tx";
 
 
 const types = [
-  ["/masterfung.checkerscosmos.checkerscosmos.MsgRejectGame", MsgRejectGame],
   ["/masterfung.checkerscosmos.checkerscosmos.MsgCreateGame", MsgCreateGame],
   ["/masterfung.checkerscosmos.checkerscosmos.MsgPlayMove", MsgPlayMove],
+  ["/masterfung.checkerscosmos.checkerscosmos.MsgRejectGame", MsgRejectGame],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -45,9 +45,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgRejectGame: (data: MsgRejectGame): EncodeObject => ({ typeUrl: "/masterfung.checkerscosmos.checkerscosmos.MsgRejectGame", value: MsgRejectGame.fromPartial( data ) }),
     msgCreateGame: (data: MsgCreateGame): EncodeObject => ({ typeUrl: "/masterfung.checkerscosmos.checkerscosmos.MsgCreateGame", value: MsgCreateGame.fromPartial( data ) }),
     msgPlayMove: (data: MsgPlayMove): EncodeObject => ({ typeUrl: "/masterfung.checkerscosmos.checkerscosmos.MsgPlayMove", value: MsgPlayMove.fromPartial( data ) }),
+    msgRejectGame: (data: MsgRejectGame): EncodeObject => ({ typeUrl: "/masterfung.checkerscosmos.checkerscosmos.MsgRejectGame", value: MsgRejectGame.fromPartial( data ) }),
     
   };
 };

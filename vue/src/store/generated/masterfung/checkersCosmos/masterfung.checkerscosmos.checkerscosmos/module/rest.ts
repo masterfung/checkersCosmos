@@ -71,6 +71,7 @@ export interface CheckerscosmosStoredGame {
   moveCount?: string;
   beforeIndex?: string;
   afterIndex?: string;
+  deadline?: string;
 }
 
 export interface CheckerscosmosSystemInfo {
