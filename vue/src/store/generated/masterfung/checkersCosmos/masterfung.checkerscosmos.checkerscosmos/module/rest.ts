@@ -69,11 +69,15 @@ export interface CheckerscosmosStoredGame {
 
   /** @format uint64 */
   moveCount?: string;
+  beforeIndex?: string;
+  afterIndex?: string;
 }
 
 export interface CheckerscosmosSystemInfo {
   /** @format uint64 */
   nextId?: string;
+  fifoHeadIndex?: string;
+  fifoTailIndex?: string;
 }
 
 export interface ProtobufAny {

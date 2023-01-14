@@ -42,6 +42,8 @@ func TestCreate1GameHasSaved(t *testing.T) {
 	require.True(t, found)
 	require.EqualValues(t, types.SystemInfo{
 		NextId: 2,
+		FifoHeadIndex: "1",
+		FifoTailIndex: "1",
 	}, systemInfo)
 	game1, found1 := keeper.GetStoredGame(sdk.UnwrapSDKContext(context), "1")
 	require.True(t, found1)
@@ -52,6 +54,8 @@ func TestCreate1GameHasSaved(t *testing.T) {
 		Black: bob,
 		Red:   carol,
 		MoveCount: 0,
+		BeforeIndex: "-1",
+		AfterIndex: "-1",
 	}, game1)
 }
 

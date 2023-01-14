@@ -29950,6 +29950,10 @@ paths:
                     moveCount:
                       type: string
                       format: uint64
+                    beforeIndex:
+                      type: string
+                    afterIndex:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -30080,6 +30084,10 @@ paths:
                   moveCount:
                     type: string
                     format: uint64
+                  beforeIndex:
+                    type: string
+                  afterIndex:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -30121,6 +30129,10 @@ paths:
                   nextId:
                     type: string
                     format: uint64
+                  fifoHeadIndex:
+                    type: string
+                  fifoTailIndex:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -52098,6 +52110,10 @@ definitions:
             moveCount:
               type: string
               format: uint64
+            beforeIndex:
+              type: string
+            afterIndex:
+              type: string
       pagination:
         type: object
         properties:
@@ -52142,6 +52158,10 @@ definitions:
           moveCount:
             type: string
             format: uint64
+          beforeIndex:
+            type: string
+          afterIndex:
+            type: string
   masterfung.checkerscosmos.checkerscosmos.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -52151,6 +52171,10 @@ definitions:
           nextId:
             type: string
             format: uint64
+          fifoHeadIndex:
+            type: string
+          fifoTailIndex:
+            type: string
   masterfung.checkerscosmos.checkerscosmos.QueryParamsResponse:
     type: object
     properties:
@@ -52174,12 +52198,20 @@ definitions:
       moveCount:
         type: string
         format: uint64
+      beforeIndex:
+        type: string
+      afterIndex:
+        type: string
   masterfung.checkerscosmos.checkerscosmos.SystemInfo:
     type: object
     properties:
       nextId:
         type: string
         format: uint64
+      fifoHeadIndex:
+        type: string
+      fifoTailIndex:
+        type: string
   tendermint.spn.claim.ClaimRecord:
     type: object
     properties:

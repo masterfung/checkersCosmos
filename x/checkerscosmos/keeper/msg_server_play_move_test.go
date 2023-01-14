@@ -63,3 +63,35 @@ func TestPlayMoveCannotParseGame(t *testing.T) {
 		ToY:       3,
 	})
 }
+
+func TestPlayMoveSavedGame(t *testing.T) {
+	msgServer, keeper, context := setupMsgServerWithOneGameForPlayMove(t)
+	ctx := sdk.UnwrapSDKContext(context)
+	msgServer.PlayMove(context, &types.MsgPlayMove{
+		Creator:   bob,
+		GameIndex: "1",
+		FromX:     1,
+		FromY:     2,
+		ToX:       2,
+		ToY:       3,
+	})
+	systemInfo, found := keeper.GetSystemInfo(ctx)
+	require.True(t, found)
+	require.EqualValues(t, types.SystemInfo{
+		NextId:        2,
+		FifoHeadIndex: "1",
+		FifoTailIndex: "1",
+	}, systemInfo)
+	game1, found := keeper.GetStoredGame(ctx, "1")
+	require.True(t, found)
+	require.EqualValues(t, types.StoredGame{
+		Index:       "1",
+		Board:       "*b*b*b*b|b*b*b*b*|***b*b*b|**b*****|********|r*r*r*r*|*r*r*r*r|r*r*r*r*",
+		Turn:        "r",
+		Black:       bob,
+		Red:         carol,
+		MoveCount:   1,
+		BeforeIndex: "-1",
+		AfterIndex:  "-1",
+	}, game1)
+}

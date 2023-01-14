@@ -25,6 +25,17 @@ func setupMsgServerWithOneGameForRejectGame(t testing.TB) (types.MsgServer, keep
 	return server, *k, context
 }
 
+func TestRejectWrongGameByCreator(t *testing.T) {
+	msgServer, _, context := setupMsgServerWithOneGameForRejectGame(t)
+	rejectGameResponse, err := msgServer.RejectGame(context, &types.MsgRejectGame{
+		Creator: alice,
+		GameIndex: "1",
+	})
+	require.Nil(t, rejectGameResponse)
+	require.Equal(t, alice+": Message creator is not a player", err.Error())
+
+}
+
 func TestRejectGameByRedOneMoveRemovedGame(t *testing.T) {
 	msgServer, keeper, context := setupMsgServerWithOneGameForRejectGame(t)
 	ctx := sdk.UnwrapSDKContext(context)
@@ -44,6 +55,8 @@ func TestRejectGameByRedOneMoveRemovedGame(t *testing.T) {
 	require.True(t, found)
 	require.EqualValues(t, types.SystemInfo{
 		NextId: 2,
+		FifoHeadIndex: "1",
+		FifoTailIndex: "1",
 	}, systemInfo)
 	_, found = keeper.GetStoredGame(ctx, "1")
 	require.True(t, found)
