@@ -72,6 +72,7 @@ export interface CheckerscosmosStoredGame {
   beforeIndex?: string;
   afterIndex?: string;
   deadline?: string;
+  winner?: string;
 }
 
 export interface CheckerscosmosSystemInfo {

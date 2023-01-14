@@ -29956,6 +29956,8 @@ paths:
                       type: string
                     deadline:
                       type: string
+                    winner:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -30091,6 +30093,8 @@ paths:
                   afterIndex:
                     type: string
                   deadline:
+                    type: string
+                  winner:
                     type: string
         default:
           description: An unexpected error response.
@@ -52120,6 +52124,8 @@ definitions:
               type: string
             deadline:
               type: string
+            winner:
+              type: string
       pagination:
         type: object
         properties:
@@ -52170,6 +52176,8 @@ definitions:
             type: string
           deadline:
             type: string
+          winner:
+            type: string
   masterfung.checkerscosmos.checkerscosmos.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -52211,6 +52219,8 @@ definitions:
       afterIndex:
         type: string
       deadline:
+        type: string
+      winner:
         type: string
   masterfung.checkerscosmos.checkerscosmos.SystemInfo:
     type: object
