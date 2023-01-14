@@ -13,19 +13,20 @@ import (
 func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*types.MsgPlayMoveResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
 	storedGame, found := k.Keeper.GetStoredGame(ctx, msg.GameIndex)
 	if !found {
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
 	}
-	if (storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER]) {
+
+	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
 		return nil, types.ErrGameFinished
 	}
+
 	isBlack := storedGame.Black == msg.Creator
 	isRed := storedGame.Red == msg.Creator
 	var player rules.Player
 	if !isBlack && !isRed {
+		println(msg.Creator);
 		return nil, sdkerrors.Wrapf(types.ErrCreatorNotPlayer, "%s", msg.Creator)
 	} else if isBlack && isRed {
 		player = rules.StringPieces[storedGame.Turn].Player
@@ -59,12 +60,13 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	}
 
 	storedGame.Winner = rules.PieceStrings[game.Winner()]
+
 	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
-	if (!found) {
-		panic("System info not found");
+	if !found {
+		panic("SystemInfo not found")
 	}
 	lastBoard := game.String()
-	if (storedGame.Winner == rules.PieceStrings[rules.NO_PLAYER]) {
+	if storedGame.Winner == rules.PieceStrings[rules.NO_PLAYER] {
 		k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
 		storedGame.Board = lastBoard
 	} else {
