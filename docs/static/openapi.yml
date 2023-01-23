@@ -4,6 +4,287 @@ info:
   name: ''
   description: ''
 paths:
+  /b9lab/checkers/checkers/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: B9LabCheckersCheckersParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /b9lab/checkers/checkers/stored_game:
+    get:
+      summary: Queries a list of StoredGame items.
+      operationId: B9LabCheckersCheckersStoredGameAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedGame:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    board:
+                      type: string
+                    turn:
+                      type: string
+                    black:
+                      type: string
+                    red:
+                      type: string
+                    moveCount:
+                      type: string
+                      format: uint64
+                    beforeIndex:
+                      type: string
+                    afterIndex:
+                      type: string
+                    deadline:
+                      type: string
+                    winner:
+                      type: string
+                    wager:
+                      type: string
+                      format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/b9lab/checkers/checkers/stored_game/{index}':
+    get:
+      summary: Queries a StoredGame by index.
+      operationId: B9LabCheckersCheckersStoredGame
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedGame:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  board:
+                    type: string
+                  turn:
+                    type: string
+                  black:
+                    type: string
+                  red:
+                    type: string
+                  moveCount:
+                    type: string
+                    format: uint64
+                  beforeIndex:
+                    type: string
+                  afterIndex:
+                    type: string
+                  deadline:
+                    type: string
+                  winner:
+                    type: string
+                  wager:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /b9lab/checkers/checkers/system_info:
+    get:
+      summary: Queries a SystemInfo by index.
+      operationId: B9LabCheckersCheckersSystemInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              SystemInfo:
+                type: object
+                properties:
+                  nextId:
+                    type: string
+                    format: uint64
+                  fifoHeadIndex:
+                    type: string
+                  fifoTailIndex:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /cosmos/auth/v1beta1/accounts:
     get:
       summary: Accounts returns all the existing accounts
@@ -3424,44 +3705,33 @@ paths:
                       last_commit_hash:
                         type: string
                         format: byte
-                        description: commit from validators from the last block
                         title: hashes of block data
                       data_hash:
                         type: string
                         format: byte
-                        title: transactions
                       validators_hash:
                         type: string
                         format: byte
-                        description: validators for the current block
                         title: hashes from the app output from the prev block
                       next_validators_hash:
                         type: string
                         format: byte
-                        title: validators for the next block
                       consensus_hash:
                         type: string
                         format: byte
-                        title: consensus params for current block
                       app_hash:
                         type: string
                         format: byte
-                        title: state after txs from the previous block
                       last_results_hash:
                         type: string
                         format: byte
-                        title: >-
-                          root hash of all results from the txs from the
-                          previous block
                       evidence_hash:
                         type: string
                         format: byte
-                        description: evidence included in the block
                         title: consensus info
                       proposer_address:
                         type: string
                         format: byte
-                        title: original proposer of the block
                     description: Header defines the structure of a Tendermint block header.
                   data:
                     type: object
@@ -3533,7 +3803,6 @@ paths:
                                               format: byte
                                           title: PartsetHeader
                                       title: BlockID
-                                      description: zero if vote is nil.
                                     timestamp:
                                       type: string
                                       format: date-time
@@ -3591,7 +3860,6 @@ paths:
                                               format: byte
                                           title: PartsetHeader
                                       title: BlockID
-                                      description: zero if vote is nil.
                                     timestamp:
                                       type: string
                                       format: date-time
@@ -3680,48 +3948,35 @@ paths:
                                             last_commit_hash:
                                               type: string
                                               format: byte
-                                              description: >-
-                                                commit from validators from the last
-                                                block
                                               title: hashes of block data
                                             data_hash:
                                               type: string
                                               format: byte
-                                              title: transactions
                                             validators_hash:
                                               type: string
                                               format: byte
-                                              description: validators for the current block
                                               title: >-
                                                 hashes from the app output from the prev
                                                 block
                                             next_validators_hash:
                                               type: string
                                               format: byte
-                                              title: validators for the next block
                                             consensus_hash:
                                               type: string
                                               format: byte
-                                              title: consensus params for current block
                                             app_hash:
                                               type: string
                                               format: byte
-                                              title: state after txs from the previous block
                                             last_results_hash:
                                               type: string
                                               format: byte
-                                              title: >-
-                                                root hash of all results from the txs
-                                                from the previous block
                                             evidence_hash:
                                               type: string
                                               format: byte
-                                              description: evidence included in the block
                                               title: consensus info
                                             proposer_address:
                                               type: string
                                               format: byte
-                                              title: original proposer of the block
                                           description: >-
                                             Header defines the structure of a
                                             Tendermint block header.
@@ -4204,44 +4459,33 @@ paths:
                       last_commit_hash:
                         type: string
                         format: byte
-                        description: commit from validators from the last block
                         title: hashes of block data
                       data_hash:
                         type: string
                         format: byte
-                        title: transactions
                       validators_hash:
                         type: string
                         format: byte
-                        description: validators for the current block
                         title: hashes from the app output from the prev block
                       next_validators_hash:
                         type: string
                         format: byte
-                        title: validators for the next block
                       consensus_hash:
                         type: string
                         format: byte
-                        title: consensus params for current block
                       app_hash:
                         type: string
                         format: byte
-                        title: state after txs from the previous block
                       last_results_hash:
                         type: string
                         format: byte
-                        title: >-
-                          root hash of all results from the txs from the
-                          previous block
                       evidence_hash:
                         type: string
                         format: byte
-                        description: evidence included in the block
                         title: consensus info
                       proposer_address:
                         type: string
                         format: byte
-                        title: original proposer of the block
                     description: Header defines the structure of a Tendermint block header.
                   data:
                     type: object
@@ -4313,7 +4557,6 @@ paths:
                                               format: byte
                                           title: PartsetHeader
                                       title: BlockID
-                                      description: zero if vote is nil.
                                     timestamp:
                                       type: string
                                       format: date-time
@@ -4371,7 +4614,6 @@ paths:
                                               format: byte
                                           title: PartsetHeader
                                       title: BlockID
-                                      description: zero if vote is nil.
                                     timestamp:
                                       type: string
                                       format: date-time
@@ -4460,48 +4702,35 @@ paths:
                                             last_commit_hash:
                                               type: string
                                               format: byte
-                                              description: >-
-                                                commit from validators from the last
-                                                block
                                               title: hashes of block data
                                             data_hash:
                                               type: string
                                               format: byte
-                                              title: transactions
                                             validators_hash:
                                               type: string
                                               format: byte
-                                              description: validators for the current block
                                               title: >-
                                                 hashes from the app output from the prev
                                                 block
                                             next_validators_hash:
                                               type: string
                                               format: byte
-                                              title: validators for the next block
                                             consensus_hash:
                                               type: string
                                               format: byte
-                                              title: consensus params for current block
                                             app_hash:
                                               type: string
                                               format: byte
-                                              title: state after txs from the previous block
                                             last_results_hash:
                                               type: string
                                               format: byte
-                                              title: >-
-                                                root hash of all results from the txs
-                                                from the previous block
                                             evidence_hash:
                                               type: string
                                               format: byte
-                                              description: evidence included in the block
                                               title: consensus info
                                             proposer_address:
                                               type: string
                                               format: byte
-                                              title: original proposer of the block
                                           description: >-
                                             Header defines the structure of a
                                             Tendermint block header.
@@ -12029,10 +12258,7 @@ paths:
                             description: >-
                               RedelegationEntry defines a redelegation object
                               with relevant metadata.
-                          description: |-
-                            entries are the redelegation entries.
-
-                            redelegation entries
+                          description: entries are the redelegation entries.
                       description: >-
                         Redelegation contains the list of a particular
                         delegator's redelegating bonds
@@ -12432,10 +12658,7 @@ paths:
                         description: >-
                           UnbondingDelegationEntry defines an unbonding object
                           with relevant metadata.
-                      description: |-
-                        entries are the unbonding delegation entries.
-
-                        unbonding delegation entries
+                      description: entries are the unbonding delegation entries.
                   description: >-
                     UnbondingDelegation stores all of a single delegator's
                     unbonding bonds
@@ -13887,44 +14110,33 @@ paths:
                       last_commit_hash:
                         type: string
                         format: byte
-                        description: commit from validators from the last block
                         title: hashes of block data
                       data_hash:
                         type: string
                         format: byte
-                        title: transactions
                       validators_hash:
                         type: string
                         format: byte
-                        description: validators for the current block
                         title: hashes from the app output from the prev block
                       next_validators_hash:
                         type: string
                         format: byte
-                        title: validators for the next block
                       consensus_hash:
                         type: string
                         format: byte
-                        title: consensus params for current block
                       app_hash:
                         type: string
                         format: byte
-                        title: state after txs from the previous block
                       last_results_hash:
                         type: string
                         format: byte
-                        title: >-
-                          root hash of all results from the txs from the
-                          previous block
                       evidence_hash:
                         type: string
                         format: byte
-                        description: evidence included in the block
                         title: consensus info
                       proposer_address:
                         type: string
                         format: byte
-                        title: original proposer of the block
                     description: Header defines the structure of a Tendermint block header.
                   valset:
                     type: array
@@ -16613,10 +16825,7 @@ paths:
                       description: >-
                         UnbondingDelegationEntry defines an unbonding object
                         with relevant metadata.
-                    description: |-
-                      entries are the unbonding delegation entries.
-
-                      unbonding delegation entries
+                    description: entries are the unbonding delegation entries.
                 description: >-
                   UnbondingDelegation stores all of a single delegator's
                   unbonding bonds
@@ -16882,10 +17091,7 @@ paths:
                         description: >-
                           UnbondingDelegationEntry defines an unbonding object
                           with relevant metadata.
-                      description: |-
-                        entries are the unbonding delegation entries.
-
-                        unbonding delegation entries
+                      description: entries are the unbonding delegation entries.
                   description: >-
                     UnbondingDelegation stores all of a single delegator's
                     unbonding bonds
@@ -17225,7 +17431,6 @@ paths:
                                 format: byte
                               index:
                                 type: boolean
-                                title: nondeterministic
                             description: >-
                               EventAttribute is a single key-value pair,
                               associated with an event.
@@ -18013,7 +18218,6 @@ paths:
                                 format: byte
                               index:
                                 type: boolean
-                                title: nondeterministic
                             description: >-
                               EventAttribute is a single key-value pair,
                               associated with an event.
@@ -29886,281 +30090,6 @@ paths:
           format: uint64
       tags:
         - Query
-  /masterfung/checkersCosmos/checkerscosmos/params:
-    get:
-      summary: Parameters queries the parameters of the module.
-      operationId: MasterfungCheckerscosmosCheckerscosmosParams
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              params:
-                description: params holds all the parameters of this module.
-                type: object
-            description: >-
-              QueryParamsResponse is response type for the Query/Params RPC
-              method.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  /masterfung/checkersCosmos/checkerscosmos/stored_game:
-    get:
-      summary: Queries a list of StoredGame items.
-      operationId: MasterfungCheckerscosmosCheckerscosmosStoredGameAll
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              storedGame:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    index:
-                      type: string
-                    board:
-                      type: string
-                    turn:
-                      type: string
-                    black:
-                      type: string
-                    red:
-                      type: string
-                    moveCount:
-                      type: string
-                      format: uint64
-                    beforeIndex:
-                      type: string
-                    afterIndex:
-                      type: string
-                    deadline:
-                      type: string
-                    winner:
-                      type: string
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                    title: |-
-                      next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently
-                  total:
-                    type: string
-                    format: uint64
-                    title: >-
-                      total is total number of results available if
-                      PageRequest.count_total
-
-                      was set, its value is undefined otherwise
-                description: >-
-                  PageResponse is to be embedded in gRPC response messages where
-                  the
-
-                  corresponding request message has used PageRequest.
-
-                   message SomeResponse {
-                           repeated Bar results = 1;
-                           PageResponse page = 2;
-                   }
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pagination.key
-          description: |-
-            key is a value returned in PageResponse.next_key to begin
-            querying the next page most efficiently. Only one of offset or key
-            should be set.
-          in: query
-          required: false
-          type: string
-          format: byte
-        - name: pagination.offset
-          description: >-
-            offset is a numeric offset that can be used when key is unavailable.
-
-            It is less efficient than using key. Only one of offset or key
-            should
-
-            be set.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.limit
-          description: >-
-            limit is the total number of results to be returned in the result
-            page.
-
-            If left empty it will default to a value to be set by each app.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.count_total
-          description: >-
-            count_total is set to true  to indicate that the result set should
-            include
-
-            a count of the total number of items available for pagination in
-            UIs.
-
-            count_total is only respected when offset is used. It is ignored
-            when key
-
-            is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
-      tags:
-        - Query
-  '/masterfung/checkersCosmos/checkerscosmos/stored_game/{index}':
-    get:
-      summary: Queries a StoredGame by index.
-      operationId: MasterfungCheckerscosmosCheckerscosmosStoredGame
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              storedGame:
-                type: object
-                properties:
-                  index:
-                    type: string
-                  board:
-                    type: string
-                  turn:
-                    type: string
-                  black:
-                    type: string
-                  red:
-                    type: string
-                  moveCount:
-                    type: string
-                    format: uint64
-                  beforeIndex:
-                    type: string
-                  afterIndex:
-                    type: string
-                  deadline:
-                    type: string
-                  winner:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: index
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  /masterfung/checkersCosmos/checkerscosmos/system_info:
-    get:
-      summary: Queries a SystemInfo by index.
-      operationId: MasterfungCheckerscosmosCheckerscosmosSystemInfo
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              SystemInfo:
-                type: object
-                properties:
-                  nextId:
-                    type: string
-                    format: uint64
-                  fifoHeadIndex:
-                    type: string
-                  fifoTailIndex:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
   /tendermint/spn/claim/airdrop_supply:
     get:
       summary: Queries a AirdropSupply by index.
@@ -30786,356 +30715,60 @@ paths:
       tags:
         - Query
 definitions:
-  cosmos.auth.v1beta1.Params:
+  b9lab.checkers.checkers.MsgCreateGameResponse:
     type: object
     properties:
-      max_memo_characters:
+      gameIndex:
         type: string
-        format: uint64
-      tx_sig_limit:
-        type: string
-        format: uint64
-      tx_size_cost_per_byte:
-        type: string
-        format: uint64
-      sig_verify_cost_ed25519:
-        type: string
-        format: uint64
-      sig_verify_cost_secp256k1:
-        type: string
-        format: uint64
-    description: Params defines the parameters for the auth module.
-  cosmos.auth.v1beta1.QueryAccountResponse:
+  b9lab.checkers.checkers.MsgPlayMoveResponse:
     type: object
     properties:
-      account:
-        type: object
-        properties:
-          '@type':
-            type: string
-            description: >-
-              A URL/resource name that uniquely identifies the type of the
-              serialized
-
-              protocol buffer message. This string must contain at least
-
-              one "/" character. The last segment of the URL's path must
-              represent
-
-              the fully qualified name of the type (as in
-
-              `path/google.protobuf.Duration`). The name should be in a
-              canonical form
-
-              (e.g., leading "." is not accepted).
-
-
-              In practice, teams usually precompile into the binary all types
-              that they
-
-              expect it to use in the context of Any. However, for URLs which
-              use the
-
-              scheme `http`, `https`, or no scheme, one can optionally set up a
-              type
-
-              server that maps type URLs to message definitions as follows:
-
-
-              * If no scheme is provided, `https` is assumed.
-
-              * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                value in binary format, or produce an error.
-              * Applications are allowed to cache lookup results based on the
-                URL, or have them precompiled into a binary to avoid any
-                lookup. Therefore, binary compatibility needs to be preserved
-                on changes to types. (Use versioned type names to manage
-                breaking changes.)
-
-              Note: this functionality is not currently available in the
-              official
-
-              protobuf release, and it is not used for type URLs beginning with
-
-              type.googleapis.com.
-
-
-              Schemes other than `http`, `https` (or the empty scheme) might be
-
-              used with implementation specific semantics.
-        additionalProperties: {}
-        description: >-
-          `Any` contains an arbitrary serialized protocol buffer message along
-          with a
-
-          URL that describes the type of the serialized message.
-
-
-          Protobuf library provides support to pack/unpack Any values in the
-          form
-
-          of utility functions or additional generated methods of the Any type.
-
-
-          Example 1: Pack and unpack a message in C++.
-
-              Foo foo = ...;
-              Any any;
-              any.PackFrom(foo);
-              ...
-              if (any.UnpackTo(&foo)) {
-                ...
-              }
-
-          Example 2: Pack and unpack a message in Java.
-
-              Foo foo = ...;
-              Any any = Any.pack(foo);
-              ...
-              if (any.is(Foo.class)) {
-                foo = any.unpack(Foo.class);
-              }
-
-           Example 3: Pack and unpack a message in Python.
-
-              foo = Foo(...)
-              any = Any()
-              any.Pack(foo)
-              ...
-              if any.Is(Foo.DESCRIPTOR):
-                any.Unpack(foo)
-                ...
-
-           Example 4: Pack and unpack a message in Go
-
-               foo := &pb.Foo{...}
-               any, err := anypb.New(foo)
-               if err != nil {
-                 ...
-               }
-               ...
-               foo := &pb.Foo{}
-               if err := any.UnmarshalTo(foo); err != nil {
-                 ...
-               }
-
-          The pack methods provided by protobuf library will by default use
-
-          'type.googleapis.com/full.type.name' as the type URL and the unpack
-
-          methods only use the fully qualified type name after the last '/'
-
-          in the type URL, for example "foo.bar.com/x/y.z" will yield type
-
-          name "y.z".
-
-
-
-          JSON
-
-          ====
-
-          The JSON representation of an `Any` value uses the regular
-
-          representation of the deserialized, embedded message, with an
-
-          additional field `@type` which contains the type URL. Example:
-
-              package google.profile;
-              message Person {
-                string first_name = 1;
-                string last_name = 2;
-              }
-
-              {
-                "@type": "type.googleapis.com/google.profile.Person",
-                "firstName": <string>,
-                "lastName": <string>
-              }
-
-          If the embedded message type is well-known and has a custom JSON
-
-          representation, that representation will be embedded adding a field
-
-          `value` which holds the custom JSON in addition to the `@type`
-
-          field. Example (for message [google.protobuf.Duration][]):
-
-              {
-                "@type": "type.googleapis.com/google.protobuf.Duration",
-                "value": "1.212s"
-              }
-    description: >-
-      QueryAccountResponse is the response type for the Query/Account RPC
-      method.
-  cosmos.auth.v1beta1.QueryAccountsResponse:
+      capturedX:
+        type: integer
+        format: int32
+      capturedY:
+        type: integer
+        format: int32
+      winner:
+        type: string
+  b9lab.checkers.checkers.MsgRejectGameResponse:
+    type: object
+  b9lab.checkers.checkers.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  b9lab.checkers.checkers.QueryAllStoredGameResponse:
     type: object
     properties:
-      accounts:
+      storedGame:
         type: array
         items:
           type: object
           properties:
-            '@type':
+            index:
               type: string
-              description: >-
-                A URL/resource name that uniquely identifies the type of the
-                serialized
-
-                protocol buffer message. This string must contain at least
-
-                one "/" character. The last segment of the URL's path must
-                represent
-
-                the fully qualified name of the type (as in
-
-                `path/google.protobuf.Duration`). The name should be in a
-                canonical form
-
-                (e.g., leading "." is not accepted).
-
-
-                In practice, teams usually precompile into the binary all types
-                that they
-
-                expect it to use in the context of Any. However, for URLs which
-                use the
-
-                scheme `http`, `https`, or no scheme, one can optionally set up
-                a type
-
-                server that maps type URLs to message definitions as follows:
-
-
-                * If no scheme is provided, `https` is assumed.
-
-                * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                  value in binary format, or produce an error.
-                * Applications are allowed to cache lookup results based on the
-                  URL, or have them precompiled into a binary to avoid any
-                  lookup. Therefore, binary compatibility needs to be preserved
-                  on changes to types. (Use versioned type names to manage
-                  breaking changes.)
-
-                Note: this functionality is not currently available in the
-                official
-
-                protobuf release, and it is not used for type URLs beginning
-                with
-
-                type.googleapis.com.
-
-
-                Schemes other than `http`, `https` (or the empty scheme) might
-                be
-
-                used with implementation specific semantics.
-          additionalProperties: {}
-          description: >-
-            `Any` contains an arbitrary serialized protocol buffer message along
-            with a
-
-            URL that describes the type of the serialized message.
-
-
-            Protobuf library provides support to pack/unpack Any values in the
-            form
-
-            of utility functions or additional generated methods of the Any
-            type.
-
-
-            Example 1: Pack and unpack a message in C++.
-
-                Foo foo = ...;
-                Any any;
-                any.PackFrom(foo);
-                ...
-                if (any.UnpackTo(&foo)) {
-                  ...
-                }
-
-            Example 2: Pack and unpack a message in Java.
-
-                Foo foo = ...;
-                Any any = Any.pack(foo);
-                ...
-                if (any.is(Foo.class)) {
-                  foo = any.unpack(Foo.class);
-                }
-
-             Example 3: Pack and unpack a message in Python.
-
-                foo = Foo(...)
-                any = Any()
-                any.Pack(foo)
-                ...
-                if any.Is(Foo.DESCRIPTOR):
-                  any.Unpack(foo)
-                  ...
-
-             Example 4: Pack and unpack a message in Go
-
-                 foo := &pb.Foo{...}
-                 any, err := anypb.New(foo)
-                 if err != nil {
-                   ...
-                 }
-                 ...
-                 foo := &pb.Foo{}
-                 if err := any.UnmarshalTo(foo); err != nil {
-                   ...
-                 }
-
-            The pack methods provided by protobuf library will by default use
-
-            'type.googleapis.com/full.type.name' as the type URL and the unpack
-
-            methods only use the fully qualified type name after the last '/'
-
-            in the type URL, for example "foo.bar.com/x/y.z" will yield type
-
-            name "y.z".
-
-
-
-            JSON
-
-            ====
-
-            The JSON representation of an `Any` value uses the regular
-
-            representation of the deserialized, embedded message, with an
-
-            additional field `@type` which contains the type URL. Example:
-
-                package google.profile;
-                message Person {
-                  string first_name = 1;
-                  string last_name = 2;
-                }
-
-                {
-                  "@type": "type.googleapis.com/google.profile.Person",
-                  "firstName": <string>,
-                  "lastName": <string>
-                }
-
-            If the embedded message type is well-known and has a custom JSON
-
-            representation, that representation will be embedded adding a field
-
-            `value` which holds the custom JSON in addition to the `@type`
-
-            field. Example (for message [google.protobuf.Duration][]):
-
-                {
-                  "@type": "type.googleapis.com/google.protobuf.Duration",
-                  "value": "1.212s"
-                }
-        title: accounts are the existing accounts
+            board:
+              type: string
+            turn:
+              type: string
+            black:
+              type: string
+            red:
+              type: string
+            moveCount:
+              type: string
+              format: uint64
+            beforeIndex:
+              type: string
+            afterIndex:
+              type: string
+            deadline:
+              type: string
+            winner:
+              type: string
+            wager:
+              type: string
+              format: uint64
       pagination:
-        description: pagination defines the pagination in the response.
         type: object
         properties:
           next_key:
@@ -31152,35 +30785,101 @@ definitions:
               PageRequest.count_total
 
               was set, its value is undefined otherwise
-    description: >-
-      QueryAccountsResponse is the response type for the Query/Accounts RPC
-      method.
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
 
-
-      Since: cosmos-sdk 0.43
-  cosmos.auth.v1beta1.QueryParamsResponse:
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  b9lab.checkers.checkers.QueryGetStoredGameResponse:
+    type: object
+    properties:
+      storedGame:
+        type: object
+        properties:
+          index:
+            type: string
+          board:
+            type: string
+          turn:
+            type: string
+          black:
+            type: string
+          red:
+            type: string
+          moveCount:
+            type: string
+            format: uint64
+          beforeIndex:
+            type: string
+          afterIndex:
+            type: string
+          deadline:
+            type: string
+          winner:
+            type: string
+          wager:
+            type: string
+            format: uint64
+  b9lab.checkers.checkers.QueryGetSystemInfoResponse:
+    type: object
+    properties:
+      SystemInfo:
+        type: object
+        properties:
+          nextId:
+            type: string
+            format: uint64
+          fifoHeadIndex:
+            type: string
+          fifoTailIndex:
+            type: string
+  b9lab.checkers.checkers.QueryParamsResponse:
     type: object
     properties:
       params:
-        description: params defines the parameters of the module.
+        description: params holds all the parameters of this module.
         type: object
-        properties:
-          max_memo_characters:
-            type: string
-            format: uint64
-          tx_sig_limit:
-            type: string
-            format: uint64
-          tx_size_cost_per_byte:
-            type: string
-            format: uint64
-          sig_verify_cost_ed25519:
-            type: string
-            format: uint64
-          sig_verify_cost_secp256k1:
-            type: string
-            format: uint64
-    description: QueryParamsResponse is the response type for the Query/Params RPC method.
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  b9lab.checkers.checkers.StoredGame:
+    type: object
+    properties:
+      index:
+        type: string
+      board:
+        type: string
+      turn:
+        type: string
+      black:
+        type: string
+      red:
+        type: string
+      moveCount:
+        type: string
+        format: uint64
+      beforeIndex:
+        type: string
+      afterIndex:
+        type: string
+      deadline:
+        type: string
+      winner:
+        type: string
+      wager:
+        type: string
+        format: uint64
+  b9lab.checkers.checkers.SystemInfo:
+    type: object
+    properties:
+      nextId:
+        type: string
+        format: uint64
+      fifoHeadIndex:
+        type: string
+      fifoTailIndex:
+        type: string
   cosmos.base.query.v1beta1.PageRequest:
     type: object
     properties:
@@ -31580,6 +31279,401 @@ definitions:
                   "@type": "type.googleapis.com/google.protobuf.Duration",
                   "value": "1.212s"
                 }
+  cosmos.auth.v1beta1.Params:
+    type: object
+    properties:
+      max_memo_characters:
+        type: string
+        format: uint64
+      tx_sig_limit:
+        type: string
+        format: uint64
+      tx_size_cost_per_byte:
+        type: string
+        format: uint64
+      sig_verify_cost_ed25519:
+        type: string
+        format: uint64
+      sig_verify_cost_secp256k1:
+        type: string
+        format: uint64
+    description: Params defines the parameters for the auth module.
+  cosmos.auth.v1beta1.QueryAccountResponse:
+    type: object
+    properties:
+      account:
+        type: object
+        properties:
+          '@type':
+            type: string
+            description: >-
+              A URL/resource name that uniquely identifies the type of the
+              serialized
+
+              protocol buffer message. This string must contain at least
+
+              one "/" character. The last segment of the URL's path must
+              represent
+
+              the fully qualified name of the type (as in
+
+              `path/google.protobuf.Duration`). The name should be in a
+              canonical form
+
+              (e.g., leading "." is not accepted).
+
+
+              In practice, teams usually precompile into the binary all types
+              that they
+
+              expect it to use in the context of Any. However, for URLs which
+              use the
+
+              scheme `http`, `https`, or no scheme, one can optionally set up a
+              type
+
+              server that maps type URLs to message definitions as follows:
+
+
+              * If no scheme is provided, `https` is assumed.
+
+              * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                value in binary format, or produce an error.
+              * Applications are allowed to cache lookup results based on the
+                URL, or have them precompiled into a binary to avoid any
+                lookup. Therefore, binary compatibility needs to be preserved
+                on changes to types. (Use versioned type names to manage
+                breaking changes.)
+
+              Note: this functionality is not currently available in the
+              official
+
+              protobuf release, and it is not used for type URLs beginning with
+
+              type.googleapis.com.
+
+
+              Schemes other than `http`, `https` (or the empty scheme) might be
+
+              used with implementation specific semantics.
+        additionalProperties: {}
+        description: >-
+          `Any` contains an arbitrary serialized protocol buffer message along
+          with a
+
+          URL that describes the type of the serialized message.
+
+
+          Protobuf library provides support to pack/unpack Any values in the
+          form
+
+          of utility functions or additional generated methods of the Any type.
+
+
+          Example 1: Pack and unpack a message in C++.
+
+              Foo foo = ...;
+              Any any;
+              any.PackFrom(foo);
+              ...
+              if (any.UnpackTo(&foo)) {
+                ...
+              }
+
+          Example 2: Pack and unpack a message in Java.
+
+              Foo foo = ...;
+              Any any = Any.pack(foo);
+              ...
+              if (any.is(Foo.class)) {
+                foo = any.unpack(Foo.class);
+              }
+
+           Example 3: Pack and unpack a message in Python.
+
+              foo = Foo(...)
+              any = Any()
+              any.Pack(foo)
+              ...
+              if any.Is(Foo.DESCRIPTOR):
+                any.Unpack(foo)
+                ...
+
+           Example 4: Pack and unpack a message in Go
+
+               foo := &pb.Foo{...}
+               any, err := anypb.New(foo)
+               if err != nil {
+                 ...
+               }
+               ...
+               foo := &pb.Foo{}
+               if err := any.UnmarshalTo(foo); err != nil {
+                 ...
+               }
+
+          The pack methods provided by protobuf library will by default use
+
+          'type.googleapis.com/full.type.name' as the type URL and the unpack
+
+          methods only use the fully qualified type name after the last '/'
+
+          in the type URL, for example "foo.bar.com/x/y.z" will yield type
+
+          name "y.z".
+
+
+
+          JSON
+
+          ====
+
+          The JSON representation of an `Any` value uses the regular
+
+          representation of the deserialized, embedded message, with an
+
+          additional field `@type` which contains the type URL. Example:
+
+              package google.profile;
+              message Person {
+                string first_name = 1;
+                string last_name = 2;
+              }
+
+              {
+                "@type": "type.googleapis.com/google.profile.Person",
+                "firstName": <string>,
+                "lastName": <string>
+              }
+
+          If the embedded message type is well-known and has a custom JSON
+
+          representation, that representation will be embedded adding a field
+
+          `value` which holds the custom JSON in addition to the `@type`
+
+          field. Example (for message [google.protobuf.Duration][]):
+
+              {
+                "@type": "type.googleapis.com/google.protobuf.Duration",
+                "value": "1.212s"
+              }
+    description: >-
+      QueryAccountResponse is the response type for the Query/Account RPC
+      method.
+  cosmos.auth.v1beta1.QueryAccountsResponse:
+    type: object
+    properties:
+      accounts:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+              description: >-
+                A URL/resource name that uniquely identifies the type of the
+                serialized
+
+                protocol buffer message. This string must contain at least
+
+                one "/" character. The last segment of the URL's path must
+                represent
+
+                the fully qualified name of the type (as in
+
+                `path/google.protobuf.Duration`). The name should be in a
+                canonical form
+
+                (e.g., leading "." is not accepted).
+
+
+                In practice, teams usually precompile into the binary all types
+                that they
+
+                expect it to use in the context of Any. However, for URLs which
+                use the
+
+                scheme `http`, `https`, or no scheme, one can optionally set up
+                a type
+
+                server that maps type URLs to message definitions as follows:
+
+
+                * If no scheme is provided, `https` is assumed.
+
+                * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                  value in binary format, or produce an error.
+                * Applications are allowed to cache lookup results based on the
+                  URL, or have them precompiled into a binary to avoid any
+                  lookup. Therefore, binary compatibility needs to be preserved
+                  on changes to types. (Use versioned type names to manage
+                  breaking changes.)
+
+                Note: this functionality is not currently available in the
+                official
+
+                protobuf release, and it is not used for type URLs beginning
+                with
+
+                type.googleapis.com.
+
+
+                Schemes other than `http`, `https` (or the empty scheme) might
+                be
+
+                used with implementation specific semantics.
+          additionalProperties: {}
+          description: >-
+            `Any` contains an arbitrary serialized protocol buffer message along
+            with a
+
+            URL that describes the type of the serialized message.
+
+
+            Protobuf library provides support to pack/unpack Any values in the
+            form
+
+            of utility functions or additional generated methods of the Any
+            type.
+
+
+            Example 1: Pack and unpack a message in C++.
+
+                Foo foo = ...;
+                Any any;
+                any.PackFrom(foo);
+                ...
+                if (any.UnpackTo(&foo)) {
+                  ...
+                }
+
+            Example 2: Pack and unpack a message in Java.
+
+                Foo foo = ...;
+                Any any = Any.pack(foo);
+                ...
+                if (any.is(Foo.class)) {
+                  foo = any.unpack(Foo.class);
+                }
+
+             Example 3: Pack and unpack a message in Python.
+
+                foo = Foo(...)
+                any = Any()
+                any.Pack(foo)
+                ...
+                if any.Is(Foo.DESCRIPTOR):
+                  any.Unpack(foo)
+                  ...
+
+             Example 4: Pack and unpack a message in Go
+
+                 foo := &pb.Foo{...}
+                 any, err := anypb.New(foo)
+                 if err != nil {
+                   ...
+                 }
+                 ...
+                 foo := &pb.Foo{}
+                 if err := any.UnmarshalTo(foo); err != nil {
+                   ...
+                 }
+
+            The pack methods provided by protobuf library will by default use
+
+            'type.googleapis.com/full.type.name' as the type URL and the unpack
+
+            methods only use the fully qualified type name after the last '/'
+
+            in the type URL, for example "foo.bar.com/x/y.z" will yield type
+
+            name "y.z".
+
+
+
+            JSON
+
+            ====
+
+            The JSON representation of an `Any` value uses the regular
+
+            representation of the deserialized, embedded message, with an
+
+            additional field `@type` which contains the type URL. Example:
+
+                package google.profile;
+                message Person {
+                  string first_name = 1;
+                  string last_name = 2;
+                }
+
+                {
+                  "@type": "type.googleapis.com/google.profile.Person",
+                  "firstName": <string>,
+                  "lastName": <string>
+                }
+
+            If the embedded message type is well-known and has a custom JSON
+
+            representation, that representation will be embedded adding a field
+
+            `value` which holds the custom JSON in addition to the `@type`
+
+            field. Example (for message [google.protobuf.Duration][]):
+
+                {
+                  "@type": "type.googleapis.com/google.protobuf.Duration",
+                  "value": "1.212s"
+                }
+        title: accounts are the existing accounts
+      pagination:
+        description: pagination defines the pagination in the response.
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+    description: >-
+      QueryAccountsResponse is the response type for the Query/Accounts RPC
+      method.
+
+
+      Since: cosmos-sdk 0.43
+  cosmos.auth.v1beta1.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params defines the parameters of the module.
+        type: object
+        properties:
+          max_memo_characters:
+            type: string
+            format: uint64
+          tx_sig_limit:
+            type: string
+            format: uint64
+          tx_size_cost_per_byte:
+            type: string
+            format: uint64
+          sig_verify_cost_ed25519:
+            type: string
+            format: uint64
+          sig_verify_cost_secp256k1:
+            type: string
+            format: uint64
+    description: QueryParamsResponse is the response type for the Query/Params RPC method.
   cosmos.authz.v1beta1.Grant:
     type: object
     properties:
@@ -33170,42 +33264,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           data:
             type: object
@@ -33274,7 +33359,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -33332,7 +33416,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -33421,48 +33504,35 @@ definitions:
                                     last_commit_hash:
                                       type: string
                                       format: byte
-                                      description: >-
-                                        commit from validators from the last
-                                        block
                                       title: hashes of block data
                                     data_hash:
                                       type: string
                                       format: byte
-                                      title: transactions
                                     validators_hash:
                                       type: string
                                       format: byte
-                                      description: validators for the current block
                                       title: >-
                                         hashes from the app output from the prev
                                         block
                                     next_validators_hash:
                                       type: string
                                       format: byte
-                                      title: validators for the next block
                                     consensus_hash:
                                       type: string
                                       format: byte
-                                      title: consensus params for current block
                                     app_hash:
                                       type: string
                                       format: byte
-                                      title: state after txs from the previous block
                                     last_results_hash:
                                       type: string
                                       format: byte
-                                      title: >-
-                                        root hash of all results from the txs
-                                        from the previous block
                                     evidence_hash:
                                       type: string
                                       format: byte
-                                      description: evidence included in the block
                                       title: consensus info
                                     proposer_address:
                                       type: string
                                       format: byte
-                                      title: original proposer of the block
                                   description: >-
                                     Header defines the structure of a Tendermint
                                     block header.
@@ -33745,42 +33815,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           data:
             type: object
@@ -33849,7 +33910,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -33907,7 +33967,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -33996,48 +34055,35 @@ definitions:
                                     last_commit_hash:
                                       type: string
                                       format: byte
-                                      description: >-
-                                        commit from validators from the last
-                                        block
                                       title: hashes of block data
                                     data_hash:
                                       type: string
                                       format: byte
-                                      title: transactions
                                     validators_hash:
                                       type: string
                                       format: byte
-                                      description: validators for the current block
                                       title: >-
                                         hashes from the app output from the prev
                                         block
                                     next_validators_hash:
                                       type: string
                                       format: byte
-                                      title: validators for the next block
                                     consensus_hash:
                                       type: string
                                       format: byte
-                                      title: consensus params for current block
                                     app_hash:
                                       type: string
                                       format: byte
-                                      title: state after txs from the previous block
                                     last_results_hash:
                                       type: string
                                       format: byte
-                                      title: >-
-                                        root hash of all results from the txs
-                                        from the previous block
                                     evidence_hash:
                                       type: string
                                       format: byte
-                                      description: evidence included in the block
                                       title: consensus info
                                     proposer_address:
                                       type: string
                                       format: byte
-                                      title: original proposer of the block
                                   description: >-
                                     Header defines the structure of a Tendermint
                                     block header.
@@ -35079,42 +35125,33 @@ definitions:
           last_commit_hash:
             type: string
             format: byte
-            description: commit from validators from the last block
             title: hashes of block data
           data_hash:
             type: string
             format: byte
-            title: transactions
           validators_hash:
             type: string
             format: byte
-            description: validators for the current block
             title: hashes from the app output from the prev block
           next_validators_hash:
             type: string
             format: byte
-            title: validators for the next block
           consensus_hash:
             type: string
             format: byte
-            title: consensus params for current block
           app_hash:
             type: string
             format: byte
-            title: state after txs from the previous block
           last_results_hash:
             type: string
             format: byte
-            title: root hash of all results from the txs from the previous block
           evidence_hash:
             type: string
             format: byte
-            description: evidence included in the block
             title: consensus info
           proposer_address:
             type: string
             format: byte
-            title: original proposer of the block
         description: Header defines the structure of a Tendermint block header.
       data:
         type: object
@@ -35183,7 +35220,6 @@ definitions:
                                   format: byte
                               title: PartsetHeader
                           title: BlockID
-                          description: zero if vote is nil.
                         timestamp:
                           type: string
                           format: date-time
@@ -35241,7 +35277,6 @@ definitions:
                                   format: byte
                               title: PartsetHeader
                           title: BlockID
-                          description: zero if vote is nil.
                         timestamp:
                           type: string
                           format: date-time
@@ -35329,46 +35364,35 @@ definitions:
                                 last_commit_hash:
                                   type: string
                                   format: byte
-                                  description: commit from validators from the last block
                                   title: hashes of block data
                                 data_hash:
                                   type: string
                                   format: byte
-                                  title: transactions
                                 validators_hash:
                                   type: string
                                   format: byte
-                                  description: validators for the current block
                                   title: >-
                                     hashes from the app output from the prev
                                     block
                                 next_validators_hash:
                                   type: string
                                   format: byte
-                                  title: validators for the next block
                                 consensus_hash:
                                   type: string
                                   format: byte
-                                  title: consensus params for current block
                                 app_hash:
                                   type: string
                                   format: byte
-                                  title: state after txs from the previous block
                                 last_results_hash:
                                   type: string
                                   format: byte
-                                  title: >-
-                                    root hash of all results from the txs from
-                                    the previous block
                                 evidence_hash:
                                   type: string
                                   format: byte
-                                  description: evidence included in the block
                                   title: consensus info
                                 proposer_address:
                                   type: string
                                   format: byte
-                                  title: original proposer of the block
                               description: >-
                                 Header defines the structure of a Tendermint
                                 block header.
@@ -35735,7 +35759,6 @@ definitions:
                     format: byte
                 title: PartsetHeader
             title: BlockID
-            description: zero if vote is nil.
           timestamp:
             type: string
             format: date-time
@@ -35792,7 +35815,6 @@ definitions:
                     format: byte
                 title: PartsetHeader
             title: BlockID
-            description: zero if vote is nil.
           timestamp:
             type: string
             format: date-time
@@ -35867,7 +35889,6 @@ definitions:
                         format: byte
                     title: PartsetHeader
                 title: BlockID
-                description: zero if vote is nil.
               timestamp:
                 type: string
                 format: date-time
@@ -35924,7 +35945,6 @@ definitions:
                         format: byte
                     title: PartsetHeader
                 title: BlockID
-                description: zero if vote is nil.
               timestamp:
                 type: string
                 format: date-time
@@ -36012,44 +36032,33 @@ definitions:
                       last_commit_hash:
                         type: string
                         format: byte
-                        description: commit from validators from the last block
                         title: hashes of block data
                       data_hash:
                         type: string
                         format: byte
-                        title: transactions
                       validators_hash:
                         type: string
                         format: byte
-                        description: validators for the current block
                         title: hashes from the app output from the prev block
                       next_validators_hash:
                         type: string
                         format: byte
-                        title: validators for the next block
                       consensus_hash:
                         type: string
                         format: byte
-                        title: consensus params for current block
                       app_hash:
                         type: string
                         format: byte
-                        title: state after txs from the previous block
                       last_results_hash:
                         type: string
                         format: byte
-                        title: >-
-                          root hash of all results from the txs from the
-                          previous block
                       evidence_hash:
                         type: string
                         format: byte
-                        description: evidence included in the block
                         title: consensus info
                       proposer_address:
                         type: string
                         format: byte
-                        title: original proposer of the block
                     description: Header defines the structure of a Tendermint block header.
                   commit:
                     type: object
@@ -36253,7 +36262,6 @@ definitions:
                               format: byte
                           title: PartsetHeader
                       title: BlockID
-                      description: zero if vote is nil.
                     timestamp:
                       type: string
                       format: date-time
@@ -36311,7 +36319,6 @@ definitions:
                               format: byte
                           title: PartsetHeader
                       title: BlockID
-                      description: zero if vote is nil.
                     timestamp:
                       type: string
                       format: date-time
@@ -36399,44 +36406,33 @@ definitions:
                             last_commit_hash:
                               type: string
                               format: byte
-                              description: commit from validators from the last block
                               title: hashes of block data
                             data_hash:
                               type: string
                               format: byte
-                              title: transactions
                             validators_hash:
                               type: string
                               format: byte
-                              description: validators for the current block
                               title: hashes from the app output from the prev block
                             next_validators_hash:
                               type: string
                               format: byte
-                              title: validators for the next block
                             consensus_hash:
                               type: string
                               format: byte
-                              title: consensus params for current block
                             app_hash:
                               type: string
                               format: byte
-                              title: state after txs from the previous block
                             last_results_hash:
                               type: string
                               format: byte
-                              title: >-
-                                root hash of all results from the txs from the
-                                previous block
                             evidence_hash:
                               type: string
                               format: byte
-                              description: evidence included in the block
                               title: consensus info
                             proposer_address:
                               type: string
                               format: byte
-                              title: original proposer of the block
                           description: >-
                             Header defines the structure of a Tendermint block
                             header.
@@ -36640,42 +36636,33 @@ definitions:
       last_commit_hash:
         type: string
         format: byte
-        description: commit from validators from the last block
         title: hashes of block data
       data_hash:
         type: string
         format: byte
-        title: transactions
       validators_hash:
         type: string
         format: byte
-        description: validators for the current block
         title: hashes from the app output from the prev block
       next_validators_hash:
         type: string
         format: byte
-        title: validators for the next block
       consensus_hash:
         type: string
         format: byte
-        title: consensus params for current block
       app_hash:
         type: string
         format: byte
-        title: state after txs from the previous block
       last_results_hash:
         type: string
         format: byte
-        title: root hash of all results from the txs from the previous block
       evidence_hash:
         type: string
         format: byte
-        description: evidence included in the block
         title: consensus info
       proposer_address:
         type: string
         format: byte
-        title: original proposer of the block
     description: Header defines the structure of a Tendermint block header.
   tendermint.types.LightBlock:
     type: object
@@ -36732,42 +36719,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           commit:
             type: object
@@ -36936,44 +36914,33 @@ definitions:
                   last_commit_hash:
                     type: string
                     format: byte
-                    description: commit from validators from the last block
                     title: hashes of block data
                   data_hash:
                     type: string
                     format: byte
-                    title: transactions
                   validators_hash:
                     type: string
                     format: byte
-                    description: validators for the current block
                     title: hashes from the app output from the prev block
                   next_validators_hash:
                     type: string
                     format: byte
-                    title: validators for the next block
                   consensus_hash:
                     type: string
                     format: byte
-                    title: consensus params for current block
                   app_hash:
                     type: string
                     format: byte
-                    title: state after txs from the previous block
                   last_results_hash:
                     type: string
                     format: byte
-                    title: >-
-                      root hash of all results from the txs from the previous
-                      block
                   evidence_hash:
                     type: string
                     format: byte
-                    description: evidence included in the block
                     title: consensus info
                   proposer_address:
                     type: string
                     format: byte
-                    title: original proposer of the block
                 description: Header defines the structure of a Tendermint block header.
               commit:
                 type: object
@@ -37186,42 +37153,33 @@ definitions:
           last_commit_hash:
             type: string
             format: byte
-            description: commit from validators from the last block
             title: hashes of block data
           data_hash:
             type: string
             format: byte
-            title: transactions
           validators_hash:
             type: string
             format: byte
-            description: validators for the current block
             title: hashes from the app output from the prev block
           next_validators_hash:
             type: string
             format: byte
-            title: validators for the next block
           consensus_hash:
             type: string
             format: byte
-            title: consensus params for current block
           app_hash:
             type: string
             format: byte
-            title: state after txs from the previous block
           last_results_hash:
             type: string
             format: byte
-            title: root hash of all results from the txs from the previous block
           evidence_hash:
             type: string
             format: byte
-            description: evidence included in the block
             title: consensus info
           proposer_address:
             type: string
             format: byte
-            title: original proposer of the block
         description: Header defines the structure of a Tendermint block header.
       commit:
         type: object
@@ -37408,7 +37366,6 @@ definitions:
                 format: byte
             title: PartsetHeader
         title: BlockID
-        description: zero if vote is nil.
       timestamp:
         type: string
         format: date-time
@@ -40214,42 +40171,33 @@ definitions:
           last_commit_hash:
             type: string
             format: byte
-            description: commit from validators from the last block
             title: hashes of block data
           data_hash:
             type: string
             format: byte
-            title: transactions
           validators_hash:
             type: string
             format: byte
-            description: validators for the current block
             title: hashes from the app output from the prev block
           next_validators_hash:
             type: string
             format: byte
-            title: validators for the next block
           consensus_hash:
             type: string
             format: byte
-            title: consensus params for current block
           app_hash:
             type: string
             format: byte
-            title: state after txs from the previous block
           last_results_hash:
             type: string
             format: byte
-            title: root hash of all results from the txs from the previous block
           evidence_hash:
             type: string
             format: byte
-            description: evidence included in the block
             title: consensus info
           proposer_address:
             type: string
             format: byte
-            title: original proposer of the block
         description: Header defines the structure of a Tendermint block header.
       valset:
         type: array
@@ -40782,10 +40730,7 @@ definitions:
                 description: >-
                   UnbondingDelegationEntry defines an unbonding object with
                   relevant metadata.
-              description: |-
-                entries are the unbonding delegation entries.
-
-                unbonding delegation entries
+              description: entries are the unbonding delegation entries.
           description: >-
             UnbondingDelegation stores all of a single delegator's unbonding
             bonds
@@ -41473,42 +41418,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           valset:
             type: array
@@ -41910,10 +41846,7 @@ definitions:
                     description: >-
                       RedelegationEntry defines a redelegation object with
                       relevant metadata.
-                  description: |-
-                    entries are the redelegation entries.
-
-                    redelegation entries
+                  description: entries are the redelegation entries.
               description: >-
                 Redelegation contains the list of a particular delegator's
                 redelegating bonds
@@ -42032,10 +41965,7 @@ definitions:
               description: >-
                 UnbondingDelegationEntry defines an unbonding object with
                 relevant metadata.
-            description: |-
-              entries are the unbonding delegation entries.
-
-              unbonding delegation entries
+            description: entries are the unbonding delegation entries.
         description: |-
           UnbondingDelegation stores all of a single delegator's unbonding bonds
           for a single validator in an time-ordered list.
@@ -42447,10 +42377,7 @@ definitions:
                 description: >-
                   UnbondingDelegationEntry defines an unbonding object with
                   relevant metadata.
-              description: |-
-                entries are the unbonding delegation entries.
-
-                unbonding delegation entries
+              description: entries are the unbonding delegation entries.
           description: >-
             UnbondingDelegation stores all of a single delegator's unbonding
             bonds
@@ -42839,10 +42766,7 @@ definitions:
           description: >-
             RedelegationEntry defines a redelegation object with relevant
             metadata.
-        description: |-
-          entries are the redelegation entries.
-
-          redelegation entries
+        description: entries are the redelegation entries.
     description: >-
       Redelegation contains the list of a particular delegator's redelegating
       bonds
@@ -42955,10 +42879,7 @@ definitions:
               description: >-
                 RedelegationEntry defines a redelegation object with relevant
                 metadata.
-            description: |-
-              entries are the redelegation entries.
-
-              redelegation entries
+            description: entries are the redelegation entries.
         description: >-
           Redelegation contains the list of a particular delegator's
           redelegating bonds
@@ -43048,10 +42969,7 @@ definitions:
           description: >-
             UnbondingDelegationEntry defines an unbonding object with relevant
             metadata.
-        description: |-
-          entries are the unbonding delegation entries.
-
-          unbonding delegation entries
+        description: entries are the unbonding delegation entries.
     description: |-
       UnbondingDelegation stores all of a single delegator's unbonding bonds
       for a single validator in an time-ordered list.
@@ -43446,7 +43364,6 @@ definitions:
                     format: byte
                   index:
                     type: boolean
-                    title: nondeterministic
                 description: >-
                   EventAttribute is a single key-value pair, associated with an
                   event.
@@ -43754,7 +43671,6 @@ definitions:
                     format: byte
                   index:
                     type: boolean
-                    title: nondeterministic
                 description: >-
                   EventAttribute is a single key-value pair, associated with an
                   event.
@@ -44238,7 +44154,6 @@ definitions:
                         format: byte
                       index:
                         type: boolean
-                        title: nondeterministic
                     description: >-
                       EventAttribute is a single key-value pair, associated with
                       an event.
@@ -44403,42 +44318,33 @@ definitions:
               last_commit_hash:
                 type: string
                 format: byte
-                description: commit from validators from the last block
                 title: hashes of block data
               data_hash:
                 type: string
                 format: byte
-                title: transactions
               validators_hash:
                 type: string
                 format: byte
-                description: validators for the current block
                 title: hashes from the app output from the prev block
               next_validators_hash:
                 type: string
                 format: byte
-                title: validators for the next block
               consensus_hash:
                 type: string
                 format: byte
-                title: consensus params for current block
               app_hash:
                 type: string
                 format: byte
-                title: state after txs from the previous block
               last_results_hash:
                 type: string
                 format: byte
-                title: root hash of all results from the txs from the previous block
               evidence_hash:
                 type: string
                 format: byte
-                description: evidence included in the block
                 title: consensus info
               proposer_address:
                 type: string
                 format: byte
-                title: original proposer of the block
             description: Header defines the structure of a Tendermint block header.
           data:
             type: object
@@ -44507,7 +44413,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -44565,7 +44470,6 @@ definitions:
                                       format: byte
                                   title: PartsetHeader
                               title: BlockID
-                              description: zero if vote is nil.
                             timestamp:
                               type: string
                               format: date-time
@@ -44654,48 +44558,35 @@ definitions:
                                     last_commit_hash:
                                       type: string
                                       format: byte
-                                      description: >-
-                                        commit from validators from the last
-                                        block
                                       title: hashes of block data
                                     data_hash:
                                       type: string
                                       format: byte
-                                      title: transactions
                                     validators_hash:
                                       type: string
                                       format: byte
-                                      description: validators for the current block
                                       title: >-
                                         hashes from the app output from the prev
                                         block
                                     next_validators_hash:
                                       type: string
                                       format: byte
-                                      title: validators for the next block
                                     consensus_hash:
                                       type: string
                                       format: byte
-                                      title: consensus params for current block
                                     app_hash:
                                       type: string
                                       format: byte
-                                      title: state after txs from the previous block
                                     last_results_hash:
                                       type: string
                                       format: byte
-                                      title: >-
-                                        root hash of all results from the txs
-                                        from the previous block
                                     evidence_hash:
                                       type: string
                                       format: byte
-                                      description: evidence included in the block
                                       title: consensus info
                                     proposer_address:
                                       type: string
                                       format: byte
-                                      title: original proposer of the block
                                   description: >-
                                     Header defines the structure of a Tendermint
                                     block header.
@@ -45210,7 +45101,6 @@ definitions:
                         format: byte
                       index:
                         type: boolean
-                        title: nondeterministic
                     description: >-
                       EventAttribute is a single key-value pair, associated with
                       an event.
@@ -45533,7 +45423,6 @@ definitions:
                           format: byte
                         index:
                           type: boolean
-                          title: nondeterministic
                       description: >-
                         EventAttribute is a single key-value pair, associated
                         with an event.
@@ -45982,7 +45871,6 @@ definitions:
                         format: byte
                       index:
                         type: boolean
-                        title: nondeterministic
                     description: >-
                       EventAttribute is a single key-value pair, associated with
                       an event.
@@ -47141,7 +47029,6 @@ definitions:
               format: byte
             index:
               type: boolean
-              title: nondeterministic
           description: 'EventAttribute is a single key-value pair, associated with an event.'
     description: >-
       Event allows application developers to attach additional information to
@@ -47161,7 +47048,6 @@ definitions:
         format: byte
       index:
         type: boolean
-        title: nondeterministic
     description: 'EventAttribute is a single key-value pair, associated with an event.'
   cosmos.upgrade.v1beta1.ModuleVersion:
     type: object
@@ -52076,162 +51962,6 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
-  masterfung.checkerscosmos.checkerscosmos.MsgCreateGameResponse:
-    type: object
-    properties:
-      gameIndex:
-        type: string
-  masterfung.checkerscosmos.checkerscosmos.MsgPlayMoveResponse:
-    type: object
-    properties:
-      capturedX:
-        type: integer
-        format: int32
-      capturedY:
-        type: integer
-        format: int32
-      winner:
-        type: string
-  masterfung.checkerscosmos.checkerscosmos.MsgRejectGameResponse:
-    type: object
-  masterfung.checkerscosmos.checkerscosmos.Params:
-    type: object
-    description: Params defines the parameters for the module.
-  masterfung.checkerscosmos.checkerscosmos.QueryAllStoredGameResponse:
-    type: object
-    properties:
-      storedGame:
-        type: array
-        items:
-          type: object
-          properties:
-            index:
-              type: string
-            board:
-              type: string
-            turn:
-              type: string
-            black:
-              type: string
-            red:
-              type: string
-            moveCount:
-              type: string
-              format: uint64
-            beforeIndex:
-              type: string
-            afterIndex:
-              type: string
-            deadline:
-              type: string
-            winner:
-              type: string
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            title: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  masterfung.checkerscosmos.checkerscosmos.QueryGetStoredGameResponse:
-    type: object
-    properties:
-      storedGame:
-        type: object
-        properties:
-          index:
-            type: string
-          board:
-            type: string
-          turn:
-            type: string
-          black:
-            type: string
-          red:
-            type: string
-          moveCount:
-            type: string
-            format: uint64
-          beforeIndex:
-            type: string
-          afterIndex:
-            type: string
-          deadline:
-            type: string
-          winner:
-            type: string
-  masterfung.checkerscosmos.checkerscosmos.QueryGetSystemInfoResponse:
-    type: object
-    properties:
-      SystemInfo:
-        type: object
-        properties:
-          nextId:
-            type: string
-            format: uint64
-          fifoHeadIndex:
-            type: string
-          fifoTailIndex:
-            type: string
-  masterfung.checkerscosmos.checkerscosmos.QueryParamsResponse:
-    type: object
-    properties:
-      params:
-        description: params holds all the parameters of this module.
-        type: object
-    description: QueryParamsResponse is response type for the Query/Params RPC method.
-  masterfung.checkerscosmos.checkerscosmos.StoredGame:
-    type: object
-    properties:
-      index:
-        type: string
-      board:
-        type: string
-      turn:
-        type: string
-      black:
-        type: string
-      red:
-        type: string
-      moveCount:
-        type: string
-        format: uint64
-      beforeIndex:
-        type: string
-      afterIndex:
-        type: string
-      deadline:
-        type: string
-      winner:
-        type: string
-  masterfung.checkerscosmos.checkerscosmos.SystemInfo:
-    type: object
-    properties:
-      nextId:
-        type: string
-        format: uint64
-      fifoHeadIndex:
-        type: string
-      fifoTailIndex:
-        type: string
   tendermint.spn.claim.ClaimRecord:
     type: object
     properties:

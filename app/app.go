@@ -98,17 +98,17 @@ import (
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
 
-	"github.com/masterfung/checkersCosmos/docs"
+	"github.com/b9lab/checkers/docs"
 
-	checkerscosmosmodule "github.com/masterfung/checkersCosmos/x/checkerscosmos"
-	checkerscosmosmodulekeeper "github.com/masterfung/checkersCosmos/x/checkerscosmos/keeper"
-	checkerscosmosmoduletypes "github.com/masterfung/checkersCosmos/x/checkerscosmos/types"
+	checkersmodule "github.com/b9lab/checkers/x/checkers"
+	checkersmodulekeeper "github.com/b9lab/checkers/x/checkers/keeper"
+	checkersmoduletypes "github.com/b9lab/checkers/x/checkers/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
 const (
 	AccountAddressPrefix = "cosmos"
-	Name                 = "checkersCosmos"
+	Name                 = "checkers"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
@@ -157,7 +157,7 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		monitoringp.AppModuleBasic{},
-		checkerscosmosmodule.AppModuleBasic{},
+		checkersmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -230,7 +230,7 @@ type App struct {
 	ScopedTransferKeeper   capabilitykeeper.ScopedKeeper
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 
-	CheckerscosmosKeeper checkerscosmosmodulekeeper.Keeper
+	CheckersKeeper checkersmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -267,7 +267,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
-		checkerscosmosmoduletypes.StoreKey,
+		checkersmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -389,13 +389,13 @@ func New(
 	)
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
-	app.CheckerscosmosKeeper = *checkerscosmosmodulekeeper.NewKeeper(
+	app.CheckersKeeper = *checkersmodulekeeper.NewKeeper(
 		appCodec,
-		keys[checkerscosmosmoduletypes.StoreKey],
-		keys[checkerscosmosmoduletypes.MemStoreKey],
-		app.GetSubspace(checkerscosmosmoduletypes.ModuleName),
+		keys[checkersmoduletypes.StoreKey],
+		keys[checkersmoduletypes.MemStoreKey],
+		app.GetSubspace(checkersmoduletypes.ModuleName),
 	)
-	checkerscosmosModule := checkerscosmosmodule.NewAppModule(appCodec, app.CheckerscosmosKeeper, app.AccountKeeper, app.BankKeeper)
+	checkersModule := checkersmodule.NewAppModule(appCodec, app.CheckersKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -438,7 +438,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		monitoringModule,
-		checkerscosmosModule,
+		checkersModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -466,7 +466,7 @@ func New(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
-		checkerscosmosmoduletypes.ModuleName,
+		checkersmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -490,7 +490,7 @@ func New(
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
-		checkerscosmosmoduletypes.ModuleName,
+		checkersmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -519,7 +519,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
-		checkerscosmosmoduletypes.ModuleName,
+		checkersmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -544,7 +544,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		monitoringModule,
-		checkerscosmosModule,
+		checkersModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -734,7 +734,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
-	paramsKeeper.Subspace(checkerscosmosmoduletypes.ModuleName)
+	paramsKeeper.Subspace(checkersmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
