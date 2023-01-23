@@ -33,6 +33,8 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 		return nil, sdkerrors.Wrapf(types.ErrCreatorNotPlayer, "%s", msg.Creator)
 	}
 
+	k.Keeper.MustRefundWager(ctx, &storedGame)
+
 	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
 	if !found {
 		panic("SystemInfo not found")
@@ -40,6 +42,12 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	k.Keeper.RemoveFromFifo(ctx, &storedGame, &systemInfo)
 	k.Keeper.RemoveStoredGame(ctx, msg.GameIndex)
 	k.Keeper.SetSystemInfo(ctx, systemInfo)
+
+	refund := uint64(types.RejectGameRefundGas)
+	if consumed := ctx.GasMeter().GasConsumed(); consumed < refund {
+		refund = consumed
+	}
+	ctx.GasMeter().RefundGas(refund, "Reject game")
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.GameRejectedEventType,
